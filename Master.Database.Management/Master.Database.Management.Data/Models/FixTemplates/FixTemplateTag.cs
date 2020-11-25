@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Master.Database.Management.Data.Models.FixTemplate
+namespace Master.Database.Management.Data.Models.FixTemplates
 {
     public class FixTemplateTag
     {

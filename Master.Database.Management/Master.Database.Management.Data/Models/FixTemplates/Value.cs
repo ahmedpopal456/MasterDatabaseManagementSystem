@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Master.Database.Management.Data.Models.FixTemplate
+namespace Master.Database.Management.Data.Models.FixTemplates
 {
-    public class Section
+    public class Value
     {
         [Key]
         public Guid Id { get; set; }

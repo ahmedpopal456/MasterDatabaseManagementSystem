@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Master.Database.Management.Data.Models.FixTemplate
+namespace Master.Database.Management.Data.Models.FixTemplates
 {
     public class FieldValue
     {
@@ -12,5 +12,9 @@ namespace Master.Database.Management.Data.Models.FixTemplate
 
         [ForeignKey("Value")]
         public Guid ValueId { get; set; }
+
+        public virtual Field Field { get; set; }
+
+        public virtual Value Value { get; set; }
     }
 }

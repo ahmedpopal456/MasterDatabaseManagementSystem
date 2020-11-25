@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Master.Database.Management.Data.Models.FixTemplate
+namespace Master.Database.Management.Data.Models.FixTemplates
 {
     public class FixTemplate
     {
@@ -42,8 +42,7 @@ namespace Master.Database.Management.Data.Models.FixTemplate
 
         public int Frequency { get; set; }
 
-        //? bool
-        public byte IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         public virtual Category Category { get; set; }
 
