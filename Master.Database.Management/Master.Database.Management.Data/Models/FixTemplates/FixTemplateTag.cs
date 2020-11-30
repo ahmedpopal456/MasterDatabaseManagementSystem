@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Master.Database.Management.Data.Models.FixTemplates
+namespace Master.Database.Management.Data.Models
 {
-    public class FixTemplateTag
-    {
-        //TODO specify composite key (FixTemplateId, TagName) in Context
+	public class FixTemplateTag
+	{
+		[ForeignKey("FixTemplate")]
+		public Guid FixTemplateId { get; set; }
 
-        [ForeignKey("FixTemplate")]
-        public Guid FixTemplateId { get; set; }
+		[Required, MaxLength(32)]
+		public string TagName { get; set; }
 
-        public string TagName { get; set; }
-
-        public virtual FixTemplate FixTemplate { get; set; }
-    }
+		public virtual FixTemplate FixTemplate { get; set; }
+	}
 }
