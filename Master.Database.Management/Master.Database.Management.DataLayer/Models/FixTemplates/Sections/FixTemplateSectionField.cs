@@ -1,13 +1,16 @@
-﻿using Master.Database.Management.Data.Models.FixTemplates.Segments;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using Master.Database.Management.DataLayer.Interfaces;
+using Master.Database.Management.DataLayer.Models.FixTemplates.Segments;
 
-namespace Master.Database.Management.Data.Models.FixTemplates.Sections
+namespace Master.Database.Management.DataLayer.Models.FixTemplates.Sections
 {
-	public class FixTemplateSectionField
+	public class FixTemplateSectionField : ISoftDeletable
 	{
+		#region MainProperties
+
 		[ForeignKey("FixTemplate")]
 		public Guid FixTemplateId { get; set; }
 
@@ -22,5 +25,14 @@ namespace Master.Database.Management.Data.Models.FixTemplates.Sections
 		public Guid FieldId { get; set; }
 
 		public virtual ICollection<Field> Fields { get; set; }
+
+		#endregion
+
+		#region ISoftDeletable
+		public bool IsDeleted { get; set; }
+
+		public long DeletedTimestampUtc { get; set; }
+
+		#endregion
 	}
 }

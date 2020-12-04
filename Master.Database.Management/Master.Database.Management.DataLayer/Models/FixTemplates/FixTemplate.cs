@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Master.Database.Management.Data.Enums;
-using Master.Database.Management.Data.Audits;
-using Master.Database.Management.Data.Models.FixTemplates.Sections;
+using Master.Database.Management.DataLayer.Interfaces;
+using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
 
-namespace Master.Database.Management.Data.Models
+namespace Master.Database.Management.DataLayer.Models.FixTemplates
 {
-	public class FixTemplate : SoftDeletable
+	public class FixTemplate : ISoftDeletable, IAuditable
 	{
+		#region MainProperties
+
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
@@ -36,8 +36,30 @@ namespace Master.Database.Management.Data.Models
 
 		public double SystemCostEstimate { get; set; }
 
+		public Guid CreatedByUserId { get; set; }
+
+		public Guid UpdatedByUserId { get; set; }
+
 		public virtual ICollection<FixTemplateTag> FixTemplateTags { get; set; }
 
 		public virtual ICollection<FixTemplateSectionField> FixTemplateSectionFields { get; set; }
+
+		#endregion
+
+		#region ISoftDeletable
+		public bool IsDeleted { get; set; }
+
+		public long DeletedTimestampUtc { get; set; }
+		#endregion
+
+		#region IAuditable
+
+		public long CreatedTimestampUtc { get; set; }
+
+		public long UpdatedTimestampUtc { get; set; }
+
+		public long LastAccessedTimestampUtc { get; set; }
+
+		#endregion
 	}
 }

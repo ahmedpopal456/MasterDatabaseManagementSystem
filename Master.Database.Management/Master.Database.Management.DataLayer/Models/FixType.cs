@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Master.Database.Management.Data.Models.FixTemplates.Sections;
 using System.ComponentModel.DataAnnotations.Schema;
+using Master.Database.Management.DataLayer.Models.FixTemplates;
 
-namespace Master.Database.Management.Data.Models.FixTemplates.Segments
+namespace Master.Database.Management.DataLayer.Models
 {
-	public class Section
+	public class FixType
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,6 +15,6 @@ namespace Master.Database.Management.Data.Models.FixTemplates.Segments
 		[Required, MaxLength(32)]
 		public string Name { get; set; }
 
-		public virtual FixTemplateSectionField FixTemplateSectionField { get; set; }
+		public virtual ICollection<FixTemplate> FixTemplates { get; set; }
 	}
 }
