@@ -2,7 +2,7 @@
 {
 	public enum FixTemplateStatus
 	{
-		Local,
+		Private,
 		Public
 	}
 }

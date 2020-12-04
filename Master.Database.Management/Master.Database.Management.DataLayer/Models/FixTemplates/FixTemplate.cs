@@ -22,14 +22,14 @@ namespace Master.Database.Management.DataLayer.Models.FixTemplates
 		public string Name { get; set; }
 
 		[Required, ForeignKey("FixCategoryId")]
-		public Guid FixCategoryId { get; set; }
+		public Guid CategoryId { get; set; }
 
-		public virtual FixCategory FixCategory { get; set; }
+		public virtual FixCategory Category { get; set; }
 
 		[Required, ForeignKey("FixTypeId")]
-		public Guid FixTypeId { get; set; }
+		public Guid TypeId { get; set; }
 
-		public virtual FixType FixType { get; set; }
+		public virtual FixType Type { get; set; }
 
 		[Required, StringLength(int.MaxValue)]
 		public string Description { get; set; }
@@ -40,9 +40,9 @@ namespace Master.Database.Management.DataLayer.Models.FixTemplates
 
 		public Guid UpdatedByUserId { get; set; }
 
-		public virtual ICollection<FixTemplateTag> FixTemplateTags { get; set; }
+		public virtual ICollection<FixTemplateTag> Tags { get; set; }
 
-		public virtual ICollection<FixTemplateSectionField> FixTemplateSectionFields { get; set; }
+		public virtual ICollection<FixTemplateSectionField> SectionFields { get; set; }
 
 		#endregion
 

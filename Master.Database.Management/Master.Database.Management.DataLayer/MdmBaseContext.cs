@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Master.Database.Management.DataLayer.Models;
 using Master.Database.Management.DataLayer.Models.FixTemplates;
 using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
-using Master.Database.Management.DataLayer.Models.FixTemplates.Segments;
+using Master.Database.Management.DataLayer.Models.FixTemplates.Fields;
 
 namespace Master.Database.Management.DataLayer
 {
@@ -38,39 +38,31 @@ namespace Master.Database.Management.DataLayer
 			builder.Entity<Section>().ToTable("FixTemplateSection");
 			builder.Entity<Field>().ToTable("FixTemplateField");
 
-			/* equivalent to builder.Conventions.Remove<PluralizingTableNameConvention>(); */
-			builder.Entity<FixType>().ToTable("FixType");
-			builder.Entity<FixCategory>().ToTable("FixCategory");
-			builder.Entity<FixTemplate>().ToTable("FixTemplate");
-			builder.Entity<FixTemplateTag>().ToTable("FixTemplateTag");
-			builder.Entity<FixTemplateFieldValue>().ToTable("FixTemplateFieldValue");
-			builder.Entity<FixTemplateSectionField>().ToTable("FixTemplateSectionField");
-
 			builder.Entity<FixTemplate>().HasQueryFilter(p => p.IsDeleted == false);
 
 			/* Composite Keys */
-			builder.Entity<FixTemplateTag>().HasKey(ftt => new { ftt.FixTemplateId, ftt.TagName });
+			builder.Entity<FixTemplateTag>().HasKey(ftt => new { ftt.FixTemplateId, ftt.Name });
 			builder.Entity<FixTemplateSectionField>().HasKey(sf => new { sf.FixTemplateId, sf.SectionId, sf.FieldId });
 			builder.Entity<FixTemplateFieldValue>().HasKey(fv => new { fv.FieldId, fv.Value });
 
 			/* Entity Mapping */
 			builder.Entity<FixTemplate>()
-				.HasMany(principal => principal.FixTemplateTags)
+				.HasMany(principal => principal.Tags)
 				.WithOne(dependent => dependent.FixTemplate)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.Entity<FixType>()
 				.HasMany(principle => principle.FixTemplates)
-				.WithOne(dependent => dependent.FixType)
+				.WithOne(dependent => dependent.Type)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder.Entity<FixCategory>()
 				.HasMany(principle => principle.FixTemplates)
-				.WithOne(dependent => dependent.FixCategory)
+				.WithOne(dependent => dependent.Category)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			builder.Entity<FixTemplate>()
-				.HasMany(principle => principle.FixTemplateSectionFields)
+				.HasMany(principle => principle.SectionFields)
 				.WithOne(dependent => dependent.FixTemplate)
 				.OnDelete(DeleteBehavior.Cascade);
 

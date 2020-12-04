@@ -3,9 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
 
-namespace Master.Database.Management.DataLayer.Models.FixTemplates.Segments
+namespace Master.Database.Management.DataLayer.Models.FixTemplates.Fields
 {
 	public class Field
 	{

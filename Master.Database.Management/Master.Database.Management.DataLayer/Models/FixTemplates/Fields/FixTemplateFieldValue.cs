@@ -3,9 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Master.Database.Management.DataLayer.Models.FixTemplates.Segments;
 
-namespace Master.Database.Management.DataLayer.Models.FixTemplates.Sections
+namespace Master.Database.Management.DataLayer.Models.FixTemplates.Fields
 {
 	public class FixTemplateFieldValue
 	{

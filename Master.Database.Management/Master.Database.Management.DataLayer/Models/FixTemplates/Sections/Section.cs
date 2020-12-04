@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Master.Database.Management.DataLayer.Models.FixTemplates.Segments
+namespace Master.Database.Management.DataLayer.Models.FixTemplates.Sections
 {
 	public class Section
 	{

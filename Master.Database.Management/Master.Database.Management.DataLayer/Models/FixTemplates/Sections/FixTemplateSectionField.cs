@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Master.Database.Management.DataLayer.Interfaces;
-using Master.Database.Management.DataLayer.Models.FixTemplates.Segments;
+using Master.Database.Management.DataLayer.Models.FixTemplates.Fields;
 
 namespace Master.Database.Management.DataLayer.Models.FixTemplates.Sections
 {
