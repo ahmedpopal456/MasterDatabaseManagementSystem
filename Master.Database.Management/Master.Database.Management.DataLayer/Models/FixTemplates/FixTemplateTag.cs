@@ -1,29 +1,31 @@
-﻿using System;
+﻿using Master.Database.Management.DataLayer.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Master.Database.Management.DataLayer.Interfaces;
 
 namespace Master.Database.Management.DataLayer.Models.FixTemplates
 {
-	public class FixTemplateTag : ISoftDeletable
-	{
-		#region MainProperties
+    public class FixTemplateTag : ISoftDeletable
+    {
+        #region MainProperties
 
-		[ForeignKey("FixTemplate")]
-		public Guid FixTemplateId { get; set; }
+        [ForeignKey("FixTemplate")]
+        public Guid FixTemplateId { get; set; }
 
-		public virtual FixTemplate FixTemplate { get; set; }
+        public virtual FixTemplate FixTemplate { get; set; }
 
-		[Required, MaxLength(32)]
-		public string Name { get; set; }
+        [Required]
+        [MaxLength(32)]
+        public string Name { get; set; }
 
-		#endregion
+        #endregion
 
-		#region ISoftDeletable
-		public bool IsDeleted { get; set; }
+        #region ISoftDeletable
 
-		public long DeletedTimestampUtc { get; set; }
+        public bool IsDeleted { get; set; }
 
-		#endregion
-	}
+        public long DeletedTimestampUtc { get; set; }
+
+        #endregion
+    }
 }

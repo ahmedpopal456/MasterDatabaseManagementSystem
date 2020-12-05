@@ -1,95 +1,102 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Master.Database.Management.DataLayer.Models;
 using Master.Database.Management.DataLayer.Models.FixTemplates;
-using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
 using Master.Database.Management.DataLayer.Models.FixTemplates.Fields;
+using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
+using Master.Database.Management.DataLayer.Models.FixTemplates.WeakEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Master.Database.Management.DataLayer
 {
-	public class MdmBaseContext : DbContext
-	{
-		public MdmBaseContext() : base() { }
+  public class MdmBaseContext : DbContext
+  {
+    public MdmBaseContext()
+    {
+    }
 
-		public MdmBaseContext(DbContextOptions options) : base(options) { }
+    public MdmBaseContext(DbContextOptions options) : base(options)
+    {
+    }
 
-		#region Dbsets
-		public DbSet<FixCategory> FixCategories { get; set; }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+      /* Map entity to table */
+      builder.Entity<Section>().ToTable("FixTemplateSection");
+      builder.Entity<Field>().ToTable("FixTemplateField");
 
-		public DbSet<FixType> FixTypes { get; set; }
+      builder.Entity<FixTemplate>().HasQueryFilter(p => p.IsDeleted == false);
 
-		public DbSet<FixTemplate> FixTemplates { get; set; }
+      /* Composite Keys */
+      builder.Entity<FixTemplateTag>().HasKey(ftt => new { ftt.FixTemplateId, ftt.Name });
+      builder.Entity<FixTemplateSectionField>().HasKey(sf => new { sf.FixTemplateId, sf.SectionId, sf.FieldId });
+      builder.Entity<FixTemplateFieldValue>().HasKey(fv => new { fv.FieldId, fv.Value });
 
-		public DbSet<FixTemplateTag> FixTemplateTags { get; set; }
+      /* Entity Mapping */
+      builder.Entity<FixTemplate>()
+        .HasMany(principal => principal.Tags)
+        .WithOne(dependent => dependent.FixTemplate)
+        .OnDelete(DeleteBehavior.Cascade);
 
-		public DbSet<Section> Sections { get; set; }
+      builder.Entity<FixType>()
+        .HasMany(principle => principle.FixTemplates)
+        .WithOne(dependent => dependent.Type)
+        .OnDelete(DeleteBehavior.Restrict);
 
-		public DbSet<Field> Fields { get; set; }
+      builder.Entity<FixCategory>()
+        .HasMany(principle => principle.FixTemplates)
+        .WithOne(dependent => dependent.Category)
+        .OnDelete(DeleteBehavior.Restrict);
 
-		public DbSet<FixTemplateSectionField> FixTemplateSectionFields { get; set; }
+      builder.Entity<FixTemplate>()
+        .HasMany(principle => principle.SectionFields)
+        .WithOne(dependent => dependent.FixTemplate)
+        .OnDelete(DeleteBehavior.Cascade);
 
-		public DbSet<FixTemplateFieldValue> FixTemplateFieldValues { get; set; }
-		#endregion
+      builder.Entity<FixTemplateSectionField>()
+        .HasOne(dependent => dependent.Section)
+        .WithOne()
+        .OnDelete(DeleteBehavior.Cascade);
 
-		protected override void OnModelCreating(ModelBuilder builder)
-		{
-			/* Map entity to table */
-			builder.Entity<Section>().ToTable("FixTemplateSection");
-			builder.Entity<Field>().ToTable("FixTemplateField");
+      builder.Entity<FixTemplateSectionField>()
+        .HasMany(dependent => dependent.Fields)
+        .WithOne()
+        .OnDelete(DeleteBehavior.Cascade);
 
-			builder.Entity<FixTemplate>().HasQueryFilter(p => p.IsDeleted == false);
+      builder.Entity<Field>()
+        .HasMany(principal => principal.FixTemplateFieldValues)
+        .WithOne(dependent => dependent.Field)
+        .OnDelete(DeleteBehavior.Cascade);
+    }
 
-			/* Composite Keys */
-			builder.Entity<FixTemplateTag>().HasKey(ftt => new { ftt.FixTemplateId, ftt.Name });
-			builder.Entity<FixTemplateSectionField>().HasKey(sf => new { sf.FixTemplateId, sf.SectionId, sf.FieldId });
-			builder.Entity<FixTemplateFieldValue>().HasKey(fv => new { fv.FieldId, fv.Value });
+    public override int SaveChanges()
+    {
+      return base.SaveChanges();
+    }
 
-			/* Entity Mapping */
-			builder.Entity<FixTemplate>()
-				.HasMany(principal => principal.Tags)
-				.WithOne(dependent => dependent.FixTemplate)
-				.OnDelete(DeleteBehavior.Cascade);
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+    {
+      return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
 
-			builder.Entity<FixType>()
-				.HasMany(principle => principle.FixTemplates)
-				.WithOne(dependent => dependent.Type)
-				.OnDelete(DeleteBehavior.Restrict);
+    #region Dbsets
 
-			builder.Entity<FixCategory>()
-				.HasMany(principle => principle.FixTemplates)
-				.WithOne(dependent => dependent.Category)
-				.OnDelete(DeleteBehavior.Restrict);
+    public DbSet<FixCategory> FixCategories { get; set; }
 
-			builder.Entity<FixTemplate>()
-				.HasMany(principle => principle.SectionFields)
-				.WithOne(dependent => dependent.FixTemplate)
-				.OnDelete(DeleteBehavior.Cascade);
+    public DbSet<FixType> FixTypes { get; set; }
 
-			builder.Entity<FixTemplateSectionField>()
-				.HasOne(dependent => dependent.Section)
-				.WithOne()
-				.OnDelete(DeleteBehavior.Cascade);
+    public DbSet<FixTemplate> FixTemplates { get; set; }
 
-			builder.Entity<FixTemplateSectionField>()
-				.HasMany(dependent => dependent.Fields)
-				.WithOne()
-				.OnDelete(DeleteBehavior.Cascade);
+    public DbSet<FixTemplateTag> FixTemplateTags { get; set; }
 
-			builder.Entity<Field>()
-				.HasMany(principal => principal.FixTemplateFieldValues)
-				.WithOne(dependent => dependent.Field)
-				.OnDelete(DeleteBehavior.Cascade);
-		}
+    public DbSet<Section> Sections { get; set; }
 
-		public override int SaveChanges()
-		{
-			return base.SaveChanges();
-		}
+    public DbSet<Field> Fields { get; set; }
 
-		public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken)
-		{
-			return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-		}
-	}
+    public DbSet<FixTemplateSectionField> FixTemplateSectionFields { get; set; }
+
+    public DbSet<FixTemplateFieldValue> FixTemplateFieldValues { get; set; }
+
+    #endregion
+  }
 }

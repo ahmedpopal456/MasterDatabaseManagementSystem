@@ -1,8 +1,8 @@
 ﻿namespace Master.Database.Management.DataLayer.Models
 {
-	public enum FixTemplateStatus
-	{
-		Private,
-		Public
-	}
+  public enum FixTemplateStatus
+  {
+    Private,
+    Public
+  }
 }
