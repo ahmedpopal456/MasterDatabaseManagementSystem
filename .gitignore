@@ -345,3 +345,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Master.Database.Management.ServerlessApi.UnitTests/coverage.cobertura.xml
