@@ -101,6 +101,20 @@ jobs:
       feedsToUse: 'config'
       nugetConfigPath: 'nuget.config'
 
+  # Prepare Sonar Cloud Analysis
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'fixit-sonarcloud'
+      organization: 'fixit'
+      scannerMode: 'MSBuild'
+      projectKey: 'fixit-app_MasterDatabaseManagementSystem'
+      projectName: 'MasterDatabaseManagementSystem'
+      extraProperties: |
+        sonar.exclusions=**/obj/**,**/*.dll
+        sonar.branch.name=$(Build.SourceBranchName)
+        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml
+        sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+
  # Build
   - task: DotNetCoreCLI@2
     displayName: Build
@@ -118,13 +132,26 @@ jobs:
       arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*]Master.Database.Management.DataLayer*"'
       nobuild: true
 
+  - script: |
+      dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.8.4 --ignore-failed-sources
+      reportgenerator "-reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml" "-targetdir:$(Build.SourcesDirectory)/CodeCoverage" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+    displayName: Create Code coverage report
+
   - task: PublishCodeCoverageResults@1
-    displayName: 'Publish Master Database Management code coverage'
+    displayName: 'Publish Master Database Management Code coverage'
     inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/**/Master.Database.Management.ServerlessApi.UnitTests/**/coverage.cobertura.xml'
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
       reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
+  # Run Sonar Cloud Analysis
+  - task: SonarCloudAnalyze@1
+
+  # Publish Sonar Cloud Report 
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
+      
  # Pack
   - task: DotNetCoreCLI@2
     displayName: "Pack"
