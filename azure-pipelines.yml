@@ -129,7 +129,7 @@ jobs:
       command: 'test'
       testRunTitle: 'Master Database Management Unit Tests'
       projects: '**/Master.Database.Management.ServerlessApi.UnitTests.csproj'
-      arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*]Master.Database.Management.DataLayer*"'
+      arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude="[*]Master.Database.Management.DataLayer*"'
       nobuild: true
 
   - script: |
