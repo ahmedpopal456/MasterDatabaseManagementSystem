@@ -51,7 +51,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.FixTemplates.
     {
       cancellationToken.ThrowIfCancellationRequested();
 
-      if (sectionCreateRequestDtos == null || sectionCreateRequestDtos.Any())
+      if (sectionCreateRequestDtos == null || !sectionCreateRequestDtos.Any())
       {
         throw new ArgumentNullException($"Either {nameof(GetOrCreateManyAsync)} received null for {nameof(IEnumerable<SectionCreateRequestDto>)} or is empty...");
       }
