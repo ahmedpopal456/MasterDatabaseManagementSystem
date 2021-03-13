@@ -6,10 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Master.Database.Management.DataLayer;
 using Master.Database.Management.ServerlessApi;
 using Master.Database.Management.DataLayer.DataAccess;
-using Master.Database.Management.DataLayer.DataAccess.Mappers;
 using Master.Database.Management.DataLayer.DataAccess.Internal;
 using Master.Database.Management.ServerlessApi.Mediators;
 using Master.Database.Management.ServerlessApi.Mediators.Internal;
+using Master.Database.Management.DataLayer.DataAccess.Mappers;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace Master.Database.Management.ServerlessApi
@@ -24,9 +24,10 @@ namespace Master.Database.Management.ServerlessApi
 
       var mapperConfig = new MapperConfiguration(mc =>
       {
-        mc.AddProfile(new MdmMapper());
+        mc.AddProfile(new MdmFixTemplatesMappers());
+        mc.AddProfile(new MdmClassificationsMappers());
       });
-      
+
       builder.Services.AddSingleton<IMapper>(mapperConfig.CreateMapper());
       builder.Services.AddScoped<MdmContext>(provider =>
       {

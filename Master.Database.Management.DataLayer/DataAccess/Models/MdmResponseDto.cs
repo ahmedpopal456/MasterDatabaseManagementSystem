@@ -1,5 +1,5 @@
 ﻿using System;
-using Fixit.Core.Database.DataContracts;
+using Fixit.Core.DataContracts;
 
 namespace Master.Database.Management.DataLayer.DataAccess.Models
 {

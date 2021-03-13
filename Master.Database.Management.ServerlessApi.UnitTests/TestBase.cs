@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Fixit.Core.DataContracts;
+using Fixit.Core.DataContracts.Seeders;
 using Master.Database.Management.DataLayer.DataAccess;
 using Master.Database.Management.DataLayer.DataAccess.Mappers;
 using Master.Database.Management.ServerlessApi.Mediators;
 using Master.Database.Management.ServerlessApi.Seeders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Configuration;
-using Master.Database.Management.ServerlessApi.Mediators.Internal;
 using Moq;
 
 namespace Master.Database.Management.ServerlessApi.UnitTests
@@ -33,7 +33,8 @@ namespace Master.Database.Management.ServerlessApi.UnitTests
     // Mapper
     protected MapperConfiguration _mapperConfiguration = new MapperConfiguration(config =>
     {
-      config.AddProfile(new MdmMapper());
+      config.AddProfile(new MdmClassificationsMappers());
+      config.AddProfile(new MdmFixTemplatesMappers());
     });
 
     [AssemblyInitialize]

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Master.Database.Management.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Master.Database.Management.DataLayer", "Master.Database.Management.DataLayer\Master.Database.Management.DataLayer.csproj", "{ED5D04CF-9ABA-4DC8-92A1-9A9D8543826A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Master.Database.Management.ServerlessApi.UnitTests", "Master.Database.Management.ServerlessApi.UnitTests\Master.Database.Management.ServerlessApi.UnitTests.csproj", "{1E26213C-C1F6-42C6-8F05-F2646D6EB565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Master.Database.Management.ServerlessApi.UnitTests", "Master.Database.Management.ServerlessApi.UnitTests\Master.Database.Management.ServerlessApi.UnitTests.csproj", "{1E26213C-C1F6-42C6-8F05-F2646D6EB565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

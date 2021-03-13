@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201231043207_UpdatedFixTemplateSectionField.cs" />
-    <Compile Remove="Migrations\20201231043207_UpdatedFixTemplateSectionField.Designer.cs" />
+    <Compile Remove="Migrations\20210304132259_AddedWorkAndSkillsConcept.cs" />
+    <Compile Remove="Migrations\20210304132259_AddedWorkAndSkillsConcept.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Fixit.Core.DataContracts" Version="1.0.42-beta" />
+    <PackageReference Include="Fixit.Core.DataContracts" Version="1.0.0-pre-alpha212-55" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />

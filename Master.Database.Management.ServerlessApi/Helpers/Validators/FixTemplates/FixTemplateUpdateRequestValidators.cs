@@ -36,8 +36,9 @@ namespace Master.Database.Management.ServerlessApi.Helpers.Validators.FixTemplat
     public static bool HasNullOrEmpty(FixTemplateUpdateRequestDto fixTemplateUpdateRequestDto)
     {
       return string.IsNullOrWhiteSpace(fixTemplateUpdateRequestDto.Name)
-             || fixTemplateUpdateRequestDto.CategoryId.Equals(Guid.Empty)
-             || fixTemplateUpdateRequestDto.TypeId.Equals(Guid.Empty)
+             || fixTemplateUpdateRequestDto.WorkTypeId.Equals(Guid.Empty)
+             || fixTemplateUpdateRequestDto.WorkCategoryId.Equals(Guid.Empty)
+             || fixTemplateUpdateRequestDto.FixUnitId.Equals(Guid.Empty)
              || string.IsNullOrWhiteSpace(fixTemplateUpdateRequestDto.Description)
              || fixTemplateUpdateRequestDto.UpdatedByUserId.Equals(Guid.Empty)
              || !fixTemplateUpdateRequestDto.Tags.Any()

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Master.Database.Management.DataLayer.Models.FixTemplates.WeakEntities;
-using Master.Database.Management.DataLayer.Models.Extensions;
 using Fixit.Core.DataContracts.FixTemplates;
+using Master.Database.Management.DataLayer.Models.Classifications;
+using Master.Database.Management.DataLayer.Models.Extensions;
+using Master.Database.Management.DataLayer.Models.FixTemplates.WeakEntities;
 
 namespace Master.Database.Management.DataLayer.Models.FixTemplates
 {
@@ -22,16 +23,22 @@ namespace Master.Database.Management.DataLayer.Models.FixTemplates
     public string Name { get; set; }
 
     [Required]
-    [ForeignKey("FixCategory")]
-    public Guid CategoryId { get; set; }
+    [ForeignKey("WorkType")]
+    public Guid WorkTypeId { get; set; }
 
-    public virtual FixCategory Category { get; set; }
+    public virtual WorkType WorkType { get; set; }
 
     [Required]
-    [ForeignKey("FixType")]
-    public Guid TypeId { get; set; }
+    [ForeignKey("WorkCategory")]
+    public Guid WorkCategoryId { get; set; }
 
-    public virtual FixType Type { get; set; }
+    public virtual WorkCategory WorkCategory { get; set; }
+
+    [Required]
+    [ForeignKey("FixUnit")]
+    public Guid FixUnitId { get; set; }
+
+    public virtual FixUnit FixUnit { get; set; }
 
     [Required]
     [StringLength(int.MaxValue)]

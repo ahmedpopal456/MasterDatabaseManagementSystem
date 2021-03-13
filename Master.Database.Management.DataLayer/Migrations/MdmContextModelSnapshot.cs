@@ -19,7 +19,7 @@ namespace Master.Database.Management.DataLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.FixCategory", b =>
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Classifications.FixUnit", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +47,84 @@ namespace Master.Database.Management.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FixCategories");
+                    b.ToTable("FixUnits");
+                });
+
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Classifications.WeakEntities.WorkCategorySkills", b =>
+                {
+                    b.Property<Guid>("WorkCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SkillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("WorkCategoryId", "SkillId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("WorkCategorySkills");
+                });
+
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Classifications.WorkCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CreatedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("DeletedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LastAccessedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
+
+                    b.Property<long>("UpdatedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkCategories");
+                });
+
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Classifications.WorkType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CreatedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("DeletedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LastAccessedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
+
+                    b.Property<long>("UpdatedTimestampUtc")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkTypes");
                 });
 
             modelBuilder.Entity("Master.Database.Management.DataLayer.Models.FixTemplates.Fields.Field", b =>
@@ -87,9 +164,6 @@ namespace Master.Database.Management.DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -103,6 +177,9 @@ namespace Master.Database.Management.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(2147483647);
+
+                    b.Property<Guid>("FixUnitId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -121,20 +198,25 @@ namespace Master.Database.Management.DataLayer.Migrations
                     b.Property<double>("SystemCostEstimate")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("TypeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UpdatedByUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("UpdatedTimestampUtc")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid>("WorkCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("FixUnitId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("WorkCategoryId");
+
+                    b.HasIndex("WorkTypeId");
 
                     b.ToTable("FixTemplates");
                 });
@@ -223,7 +305,7 @@ namespace Master.Database.Management.DataLayer.Migrations
                     b.ToTable("FixTemplateTags");
                 });
 
-            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.FixType", b =>
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Skill", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,20 +333,41 @@ namespace Master.Database.Management.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FixTypes");
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("Master.Database.Management.DataLayer.Models.Classifications.WeakEntities.WorkCategorySkills", b =>
+                {
+                    b.HasOne("Master.Database.Management.DataLayer.Models.Skill", "Skill")
+                        .WithMany()
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Master.Database.Management.DataLayer.Models.Classifications.WorkCategory", "WorkCategory")
+                        .WithMany("WorkCategorySkills")
+                        .HasForeignKey("WorkCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Master.Database.Management.DataLayer.Models.FixTemplates.FixTemplate", b =>
                 {
-                    b.HasOne("Master.Database.Management.DataLayer.Models.FixCategory", "Category")
+                    b.HasOne("Master.Database.Management.DataLayer.Models.Classifications.FixUnit", "FixUnit")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("FixUnitId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Master.Database.Management.DataLayer.Models.FixType", "Type")
+                    b.HasOne("Master.Database.Management.DataLayer.Models.Classifications.WorkCategory", "WorkCategory")
                         .WithMany()
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("WorkCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Master.Database.Management.DataLayer.Models.Classifications.WorkType", "WorkType")
+                        .WithMany()
+                        .HasForeignKey("WorkTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -2,9 +2,8 @@
 using System.Runtime.CompilerServices;
 using AutoMapper;
 using Master.Database.Management.DataLayer.DataAccess;
-using Master.Database.Management.ServerlessApi.Mediators.Internal.Fixes.Categories;
-using Master.Database.Management.ServerlessApi.Mediators.Internal.Fixes.Templates;
-using Master.Database.Management.ServerlessApi.Mediators.Internal.Fixes.Types;
+using Master.Database.Management.ServerlessApi.Mediators.Internal.Classifications;
+using Master.Database.Management.ServerlessApi.Mediators.Internal.FixTemplates;
 
 [assembly: InternalsVisibleTo("Master.Database.Management.ServerlessApi.UnitTests")]
 namespace Master.Database.Management.ServerlessApi.Mediators.Internal
@@ -20,19 +19,29 @@ namespace Master.Database.Management.ServerlessApi.Mediators.Internal
       _requestMdmDalFactory = requestMdmDalFactory ?? throw new ArgumentNullException($"{nameof(RequestMediatorFactory)} expects a value for {nameof(requestMdmDalFactory)}... null argument was provided");
     }
 
-    public IFixCategoryMediator RequestFixCategoryMediator()
-    {
-      return new FixCategoryMediator(_requestMdmDalFactory);
-    }
-
     public IFixTemplateMediator RequestFixTemplateMediator()
     {
       return new FixTemplateMediator(_mapper, _requestMdmDalFactory);
     }
 
-    public IFixTypeMediator RequestFixTypeMediator()
+    public IFixUnitMediator RequestFixUnitMediator()
     {
-      return new FixTypeMediator(_requestMdmDalFactory);
+      return new FixUnitMediator(_requestMdmDalFactory);
+    }
+
+    public ISkillMediator RequestSkillMediator()
+    {
+      return new SkillMediator(_requestMdmDalFactory);
+    }
+
+    public IWorkCategoryMediator RequestWorkCategoryMediator()
+    {
+      return new WorkCategoryMediator(_requestMdmDalFactory);
+    }
+
+    public IWorkTypeMediator RequestWorkTypeMediator()
+    {
+      return new WorkTypeMediator(_requestMdmDalFactory);
     }
   }
 }

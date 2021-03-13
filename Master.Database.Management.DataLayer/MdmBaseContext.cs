@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Master.Database.Management.DataLayer.Models;
+using Master.Database.Management.DataLayer.Models.Classifications;
+using Master.Database.Management.DataLayer.Models.Classifications.WeakEntities;
 using Master.Database.Management.DataLayer.Models.FixTemplates;
 using Master.Database.Management.DataLayer.Models.FixTemplates.Fields;
 using Master.Database.Management.DataLayer.Models.FixTemplates.Sections;
@@ -21,6 +23,20 @@ namespace Master.Database.Management.DataLayer
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+      #region WorkCategorySkills
+      builder.Entity<WorkCategorySkills>().HasKey(wcs => new { wcs.WorkCategoryId, wcs.SkillId });
+
+      builder.Entity<WorkCategorySkills>()
+        .HasOne(principal => principal.WorkCategory)
+        .WithMany(dependent => dependent.WorkCategorySkills)
+        .OnDelete(DeleteBehavior.Restrict);
+
+      builder.Entity<WorkCategorySkills>()
+        .HasOne(principal => principal.Skill)
+        .WithMany()
+        .OnDelete(DeleteBehavior.Restrict);
+      #endregion
+
       #region FixTemplate
       builder.Entity<FixTemplate>().HasQueryFilter(p => p.IsDeleted == false);
 
@@ -35,12 +51,17 @@ namespace Master.Database.Management.DataLayer
         .OnDelete(DeleteBehavior.Cascade);
 
       builder.Entity<FixTemplate>()
-        .HasOne(principal => principal.Type)
+        .HasOne(principal => principal.WorkType)
         .WithMany()
         .OnDelete(DeleteBehavior.Restrict);
 
       builder.Entity<FixTemplate>()
-        .HasOne(principal => principal.Category)
+        .HasOne(principal => principal.WorkCategory)
+        .WithMany()
+        .OnDelete(DeleteBehavior.Restrict);
+
+      builder.Entity<FixTemplate>()
+        .HasOne(principal => principal.FixUnit)
         .WithMany()
         .OnDelete(DeleteBehavior.Restrict);
       #endregion
@@ -78,9 +99,15 @@ namespace Master.Database.Management.DataLayer
 
     #region Dbsets
 
-    public DbSet<FixCategory> FixCategories { get; set; }
+    public DbSet<WorkType> WorkTypes { get; set; }
 
-    public DbSet<FixType> FixTypes { get; set; }
+    public DbSet<WorkCategory> WorkCategories { get; set; }
+
+    public DbSet<WorkCategorySkills> WorkCategorySkills { get; set; }
+
+    public DbSet<Skill> Skills { get; set; }
+
+    public DbSet<FixUnit> FixUnits { get; set; }
 
     public DbSet<FixTemplate> FixTemplates { get; set; }
 
