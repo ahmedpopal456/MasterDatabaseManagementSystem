@@ -45,13 +45,18 @@ namespace Master.Database.Management.ServerlessApi.Helpers.Validators.FixTemplat
              || fixTemplateCreateRequestDto.UpdatedByUserId.Equals(Guid.Empty)
              || !fixTemplateCreateRequestDto.Tags.Any()
              || fixTemplateCreateRequestDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag))
-             || HasNullOrEmpty(fixTemplateCreateRequestDto.Sections);
+             || HasEmpty(fixTemplateCreateRequestDto.Sections);
     }
 
-    public static bool HasNullOrEmpty(IEnumerable<FixTemplateSectionCreateRequestDto> fixTemplateSectionCreateRequestDtos)
+    public static bool HasEmpty(IEnumerable<FixTemplateSectionCreateRequestDto> fixTemplateSectionCreateRequestDtos)
     {
-      return fixTemplateSectionCreateRequestDtos.Any(fixTemplateSectionCreateRequestDto => string.IsNullOrWhiteSpace(fixTemplateSectionCreateRequestDto.Name)
-                                                                                           || HasNullOrEmpty(fixTemplateSectionCreateRequestDto.Fields));
+      var isEmpty = false;
+      if (fixTemplateSectionCreateRequestDtos.Any())
+      {
+        isEmpty = fixTemplateSectionCreateRequestDtos.Any(fixTemplateSectionCreateRequestDto => string.IsNullOrWhiteSpace(fixTemplateSectionCreateRequestDto.Name)
+                                                                                                || HasNullOrEmpty(fixTemplateSectionCreateRequestDto.Fields));
+      }
+      return isEmpty;
     }
 
     public static bool HasNullOrEmpty(IEnumerable<FixTemplateFieldCreateRequestDto> fixTemplateFieldCreateRequestDtos)

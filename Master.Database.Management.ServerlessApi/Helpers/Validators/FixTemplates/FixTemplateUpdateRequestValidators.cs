@@ -43,7 +43,7 @@ namespace Master.Database.Management.ServerlessApi.Helpers.Validators.FixTemplat
              || fixTemplateUpdateRequestDto.UpdatedByUserId.Equals(Guid.Empty)
              || !fixTemplateUpdateRequestDto.Tags.Any()
              || fixTemplateUpdateRequestDto.Tags.Any(tag => string.IsNullOrWhiteSpace(tag))
-             || FixTemplateCreateRequestValidators.HasNullOrEmpty(fixTemplateUpdateRequestDto.Sections);
+             || FixTemplateCreateRequestValidators.HasEmpty(fixTemplateUpdateRequestDto.Sections);
     }
   }
 }
