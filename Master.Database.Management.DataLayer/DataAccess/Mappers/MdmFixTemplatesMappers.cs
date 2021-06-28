@@ -129,22 +129,22 @@ namespace Master.Database.Management.DataLayer.DataAccess.Mappers
       CreateMap<FixTemplateFieldDto, FixTemplateSectionField>()
           .ForMember(field => field.FixTemplateSectionId, opts => opts.UseDestinationValue())
           .ForMember(field => field.FieldId, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Id : Guid.Empty))
-          .ForMember(field => field.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? string.Join(';', fixTemplateSectionField.Values) : default));
+          .ForMember(field => field.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? string.Join(';', fixTemplateSectionField.Value) : default));
 
       CreateMap<FixTemplateSectionField, FixTemplateFieldDto>()
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Id, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.FieldId : Guid.Empty))
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Name, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null && fixTemplateSectionField.Field != null ? fixTemplateSectionField.Field.Name : string.Empty))
-        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Values, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Value.Split(';', StringSplitOptions.None) : default));
+        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Value.Split(';', StringSplitOptions.None) : default));
 
       CreateMap<FixTemplateFieldCreateRequestDto, FixTemplateFieldDto>()
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Id, opts => opts.Ignore())
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Name, opts => opts.MapFrom(fixTemplateFieldCreateRequestDto => fixTemplateFieldCreateRequestDto != null ? fixTemplateFieldCreateRequestDto.Name : string.Empty))
-        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Values, opts => opts.MapFrom(fixTemplateFieldCreateRequestDto => fixTemplateFieldCreateRequestDto.Values.ToList()));
+        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Value, opts => opts.MapFrom(fixTemplateFieldCreateRequestDto => fixTemplateFieldCreateRequestDto.Value));
 
       CreateMap<FixTemplateFieldDto, FixTemplateFieldDto>()
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Id, opts => opts.MapFrom(sourceFixTemplateFieldDto => sourceFixTemplateFieldDto.Id))
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Name, opts => opts.MapFrom(sourceFixTemplateFieldDto => sourceFixTemplateFieldDto.Name))
-        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Values, opts => opts.MapFrom(sourceFixTemplateFieldDto => sourceFixTemplateFieldDto.Values.ToList()));
+        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Value, opts => opts.MapFrom(sourceFixTemplateFieldDto => sourceFixTemplateFieldDto.Value));
 
       #endregion
 

@@ -62,8 +62,7 @@ namespace Master.Database.Management.ServerlessApi.Helpers.Validators.FixTemplat
     public static bool HasNullOrEmpty(IEnumerable<FixTemplateFieldCreateRequestDto> fixTemplateFieldCreateRequestDtos)
     {
       return fixTemplateFieldCreateRequestDtos.Any(fixTemplateFieldCreateRequestDto => string.IsNullOrWhiteSpace(fixTemplateFieldCreateRequestDto.Name)
-                                                                                       || !fixTemplateFieldCreateRequestDto.Values.Any()
-                                                                                       || fixTemplateFieldCreateRequestDto.Values.Any(value => string.IsNullOrWhiteSpace(value)));
+                                                                                       || string.IsNullOrWhiteSpace(fixTemplateFieldCreateRequestDto.Value));
     }
   }
 }
