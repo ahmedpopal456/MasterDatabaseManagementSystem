@@ -129,12 +129,12 @@ namespace Master.Database.Management.DataLayer.DataAccess.Mappers
       CreateMap<FixTemplateFieldDto, FixTemplateSectionField>()
           .ForMember(field => field.FixTemplateSectionId, opts => opts.UseDestinationValue())
           .ForMember(field => field.FieldId, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Id : Guid.Empty))
-          .ForMember(field => field.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? string.Join(';', fixTemplateSectionField.Value) : default));
+          .ForMember(field => field.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Value : default));
 
       CreateMap<FixTemplateSectionField, FixTemplateFieldDto>()
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Id, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.FieldId : Guid.Empty))
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Name, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null && fixTemplateSectionField.Field != null ? fixTemplateSectionField.Field.Name : string.Empty))
-        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Value.Split(';', StringSplitOptions.None) : default));
+        .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Value, opts => opts.MapFrom(fixTemplateSectionField => fixTemplateSectionField != null ? fixTemplateSectionField.Value : default));
 
       CreateMap<FixTemplateFieldCreateRequestDto, FixTemplateFieldDto>()
         .ForMember(fixTemplateFieldDto => fixTemplateFieldDto.Id, opts => opts.Ignore())
