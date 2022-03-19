@@ -54,6 +54,8 @@ namespace Master.Database.Management.DataLayer.Models.FixTemplates
 
     public virtual ICollection<FixTemplateSection> FixTemplateSections { get; set; }
 
+    public virtual ICollection<FixTemplateLicense> FixTemplateLicenses { get; set; }
+
     #region ITimeTraceable
 
     public long CreatedTimestampUtc { get; set; }

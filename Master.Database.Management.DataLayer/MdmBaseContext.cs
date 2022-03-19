@@ -51,6 +51,11 @@ namespace Master.Database.Management.DataLayer
         .OnDelete(DeleteBehavior.Cascade);
 
       builder.Entity<FixTemplate>()
+        .HasMany(principal => principal.FixTemplateLicenses)
+        .WithOne(dependent => dependent.FixTemplate)
+        .OnDelete(DeleteBehavior.Cascade);
+
+      builder.Entity<FixTemplate>()
         .HasOne(principal => principal.WorkType)
         .WithMany()
         .OnDelete(DeleteBehavior.Restrict);
@@ -64,6 +69,18 @@ namespace Master.Database.Management.DataLayer
         .HasOne(principal => principal.FixUnit)
         .WithMany()
         .OnDelete(DeleteBehavior.Restrict);
+      #endregion
+
+      #region Licenses
+      builder.Entity<License>().HasQueryFilter(p => p.IsDeleted == false);
+
+      builder.Entity<License>()
+        .HasMany(principal => principal.Tags)
+        .WithOne(dependent => dependent.License)
+        .OnDelete(DeleteBehavior.Cascade);
+
+      builder.Entity<LicenseTag>().HasKey(ftt => new { ftt.LicenseId, ftt.Name });
+
       #endregion
 
       #region FixTemplateTags
