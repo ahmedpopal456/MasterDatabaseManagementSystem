@@ -29,11 +29,6 @@ namespace Master.Database.Management.ServerlessApi.Mediators.Internal
       return new FixUnitMediator(_requestMdmDalFactory);
     }
 
-    public ISkillMediator RequestSkillMediator()
-    {
-      return new SkillMediator(_requestMdmDalFactory);
-    }
-
     public IWorkCategoryMediator RequestWorkCategoryMediator()
     {
       return new WorkCategoryMediator(_requestMdmDalFactory);

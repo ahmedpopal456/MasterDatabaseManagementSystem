@@ -66,8 +66,9 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.FixTemplates
       var fixTemplateResult = await _mdmContext.FixTemplates.Include(fixTemplate => fixTemplate.Tags)
                                                             .Include(fixTemplate => fixTemplate.WorkType)
                                                             .Include(fixTemplate => fixTemplate.WorkCategory)
-                                                            .Include(fixTemplate => fixTemplate.WorkCategory).ThenInclude(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
+                                                            .Include(fixTemplate => fixTemplate.WorkCategory)
                                                             .Include(fixTemplate => fixTemplate.FixUnit)
+                                                            .Include(fixTemplate => fixTemplate.FixTemplateLicenses).ThenInclude(fixTemplateLicense => fixTemplateLicense.License).ThenInclude(license => license.Tags)
                                                             .Include(fixTemplate => fixTemplate.FixTemplateSections).ThenInclude(fixTemplateSection => fixTemplateSection.Section)
                                                             .Include(fixTemplate => fixTemplate.FixTemplateSections).ThenInclude(fixTemplateSection => fixTemplateSection.FixTemplateSectionFields).ThenInclude(fixTemplateSectionField => fixTemplateSectionField.Field)
                                                             .FirstOrDefaultAsync(fixTemplate => fixTemplate.Id.Equals(id), cancellationToken);
@@ -98,7 +99,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.FixTemplates
       var fixTemplatesResult = await fixTemplatesQuery.Include(fixTemplate => fixTemplate.Tags)
                                                       .Include(fixTemplate => fixTemplate.WorkType)
                                                       .Include(fixTemplate => fixTemplate.WorkCategory)
-                                                      .Include(fixTemplate => fixTemplate.WorkCategory).ThenInclude(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
+                                                      .Include(fixTemplate => fixTemplate.FixTemplateLicenses).ThenInclude(fixTemplateLicense => fixTemplateLicense.License).ThenInclude(license => license.Tags)
                                                       .Include(fixTemplate => fixTemplate.FixUnit)
                                                       .ToListAsync();
 
@@ -128,7 +129,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.FixTemplates
       var fixTemplatesByPage = await fixTemplatesQuery.Include(fixTemplate => fixTemplate.Tags)
                                                       .Include(fixTemplate => fixTemplate.WorkType)
                                                       .Include(fixTemplate => fixTemplate.WorkCategory)
-                                                      .Include(fixTemplate => fixTemplate.WorkCategory).ThenInclude(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
+                                                      .Include(fixTemplate => fixTemplate.FixTemplateLicenses).ThenInclude(fixTemplateLicense => fixTemplateLicense.License).ThenInclude(license => license.Tags)
                                                       .Include(fixTemplate => fixTemplate.FixUnit)
                                                       .ToPagedListAsync(validPageSize, fixTemplatePaginationRequestDto.PageNumber, cancellationToken);
 
@@ -159,7 +160,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.FixTemplates
       var fixTemplate = await _mdmContext.FixTemplates.Include(fixTemplate => fixTemplate.Tags)
                                                       .Include(fixTemplate => fixTemplate.WorkType)
                                                       .Include(fixTemplate => fixTemplate.WorkCategory)
-                                                      .Include(fixTemplate => fixTemplate.WorkCategory).ThenInclude(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
+                                                      .Include(fixTemplate => fixTemplate.FixTemplateLicenses).ThenInclude(fixTemplateLicense => fixTemplateLicense.License).ThenInclude(license => license.Tags)
                                                       .Include(fixTemplate => fixTemplate.FixUnit)
                                                       .Include(fixTemplate => fixTemplate.FixTemplateSections).ThenInclude(fixTemplateSection => fixTemplateSection.Section)
                                                       .Include(fixTemplate => fixTemplate.FixTemplateSections).ThenInclude(fixTemplateSection => fixTemplateSection.FixTemplateSectionFields).ThenInclude(fixTemplateSectionField => fixTemplateSectionField.Field)

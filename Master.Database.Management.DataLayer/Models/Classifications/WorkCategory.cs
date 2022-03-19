@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Master.Database.Management.DataLayer.Models.Classifications.WeakEntities;
 using Master.Database.Management.DataLayer.Models.Extensions;
 
 namespace Master.Database.Management.DataLayer.Models.Classifications
@@ -16,8 +15,6 @@ namespace Master.Database.Management.DataLayer.Models.Classifications
     [Required]
     [MaxLength(32)]
     public string Name { get; set; }
-
-    public virtual ICollection<WorkCategorySkills> WorkCategorySkills { get; set; }
 
     #region ITimeTraceable
 

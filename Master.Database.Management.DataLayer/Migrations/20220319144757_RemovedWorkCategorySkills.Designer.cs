@@ -4,14 +4,16 @@ using Master.Database.Management.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Master.Database.Management.DataLayer.Migrations
 {
     [DbContext(typeof(MdmContext))]
-    partial class MdmContextModelSnapshot : ModelSnapshot
+    [Migration("20220319144757_RemovedWorkCategorySkills")]
+    partial class RemovedWorkCategorySkills
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

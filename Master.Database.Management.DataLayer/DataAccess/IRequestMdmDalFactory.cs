@@ -14,12 +14,6 @@ namespace Master.Database.Management.DataLayer.DataAccess
   /// </summary>
   public interface IRequestMdmDalFactory
 	{
-    /// <summary>
-    /// Creates an instance of the <see cref="MdmSkillDal"/> with its dependencies.
-    /// </summary>
-    /// <returns>The interface of the MDM Skill Dal: <see cref="IMdmSkillDal"/></returns>
-		public IMdmSkillDal RequestMdmSkillDal();
-
     #region Fix Templates
     /// <summary>
     /// Creates an instance of the <see cref="MdmFieldDal"/> with its dependencies.

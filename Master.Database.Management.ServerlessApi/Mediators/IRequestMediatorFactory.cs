@@ -20,12 +20,6 @@ namespace Master.Database.Management.ServerlessApi.Mediators
     public IFixUnitMediator RequestFixUnitMediator();
 
     /// <summary>
-    /// Creates an instance of the <see cref="Internal.SkillMediator"/> with its dependencies.
-    /// </summary>
-    /// <returns>The interface of the MDM Field Dal: <see cref="ISkillMediator"/></returns>
-    public ISkillMediator RequestSkillMediator();
-
-    /// <summary>
     /// Creates an instance of the <see cref="Internal.Classifications.WorkCategoryMediator"/> with its dependencies.
     /// </summary>
     /// <returns>The interface of the MDM Field Dal: <see cref="IWorkCategoryMediator"/></returns>

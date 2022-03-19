@@ -38,8 +38,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.Classificatio
 
       var workCategoryDto = default(WorkCategoryDto);
 
-      var workCategoryResult = await _mdmContext.WorkCategories.Include(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
-                                                               .FirstOrDefaultAsync(workCategory => workCategory.Id.Equals(id), cancellationToken);
+      var workCategoryResult = await _mdmContext.WorkCategories.FirstOrDefaultAsync(workCategory => workCategory.Id.Equals(id), cancellationToken);
 
       if (workCategoryResult != null)
       {
@@ -58,7 +57,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.Classificatio
                                                                                   && (filterBaseDto.MinTimestampUtc == null || workCategory.CreatedTimestampUtc >= filterBaseDto.MinTimestampUtc)
                                                                                   && (filterBaseDto.MaxTimestampUtc == null || workCategory.CreatedTimestampUtc <= filterBaseDto.MaxTimestampUtc));
 
-      var workCategoriesResult = await workCategoriesQuery.Include(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill).ToListAsync();
+      var workCategoriesResult = await workCategoriesQuery.ToListAsync();
 
       var workCategoryDtos = workCategoriesResult.Select(workCategory => _mapper.Map<WorkCategory, WorkCategoryDto>(workCategory)).ToList();
       await _mdmContext.SaveChangesAsync(true, cancellationToken);
@@ -77,8 +76,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal.Classificatio
                                                                                 && (paginationRequestDto.MaxTimestampUtc == null || workCategory.CreatedTimestampUtc <= paginationRequestDto.MaxTimestampUtc));
 
       var validPageSize = paginationRequestDto.PageSize.Equals(default(int)) ? PageSize : paginationRequestDto.PageSize.Value;
-      var workCategoriesByPage = await workCategoryQuery.Include(workCategory => workCategory.WorkCategorySkills).ThenInclude(crossReference => crossReference.Skill)
-                                                        .ToPagedListAsync(validPageSize, paginationRequestDto.PageNumber, cancellationToken);
+      var workCategoriesByPage = await workCategoryQuery.ToPagedListAsync(validPageSize, paginationRequestDto.PageNumber, cancellationToken);
 
       if (workCategoriesByPage != null && workCategoriesByPage.Any())
       {

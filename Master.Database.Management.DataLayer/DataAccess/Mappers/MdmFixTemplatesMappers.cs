@@ -12,6 +12,7 @@ using Fixit.Core.DataContracts.FixTemplates.Sections;
 using Fixit.Core.DataContracts.FixTemplates.Operations.Requests.Fields;
 using Fixit.Core.DataContracts.FixTemplates.Fields;
 using Fixit.Core.DataContracts.Classifications;
+using System.Collections.Generic;
 
 namespace Master.Database.Management.DataLayer.DataAccess.Mappers
 {
@@ -25,6 +26,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Mappers
           .ForMember(fixTemplate => fixTemplate.Id, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null && !fixTemplateDto.Id.Equals(Guid.Empty) ? fixTemplateDto.Id : Guid.Empty))
           .ForMember(fixTemplate => fixTemplate.Status, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null ? fixTemplateDto.Status : default))
           .ForMember(fixTemplate => fixTemplate.Name, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null ? fixTemplateDto.Name : string.Empty))
+          .ForMember(fixTemplate => fixTemplate.FixTemplateLicenses, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null && fixTemplateDto.Licenses!= null ? fixTemplateDto.Licenses.Select(item => new FixTemplateLicense() { FixTemplateId = fixTemplateDto.Id, LicenseId = item.Id }) : default))
           .ForMember(fixTemplate => fixTemplate.WorkCategoryId, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null && fixTemplateDto.WorkCategory != null ? fixTemplateDto.WorkCategory.Id : Guid.Empty))
           .ForMember(fixTemplate => fixTemplate.WorkCategory, opts => opts.Ignore())
           .ForMember(fixTemplate => fixTemplate.WorkTypeId, opts => opts.MapFrom(fixTemplateDto => fixTemplateDto != null && fixTemplateDto.WorkType != null ? fixTemplateDto.WorkType.Id : Guid.Empty))
@@ -42,6 +44,13 @@ namespace Master.Database.Management.DataLayer.DataAccess.Mappers
         .ForMember(fixTemplateDto => fixTemplateDto.Id, opts => opts.MapFrom(fixTemplate => fixTemplate != null && !fixTemplate.Id.Equals(Guid.Empty) ? fixTemplate.Id : Guid.Empty))
         .ForMember(fixTemplateDto => fixTemplateDto.Status, opts => opts.MapFrom(fixTemplate => fixTemplate != null ? fixTemplate.Status : default))
         .ForMember(fixTemplateDto => fixTemplateDto.Name, opts => opts.MapFrom(fixTemplate => fixTemplate != null ? fixTemplate.Name : string.Empty))
+        .ForMember(fixTemplateDto => fixTemplateDto.Licenses, opts => opts.MapFrom(fixTemplate => fixTemplate != null && fixTemplate.FixTemplateLicenses != null && fixTemplate.FixTemplateLicenses.Any() ? fixTemplate.FixTemplateLicenses.Select(item => new LicenseDto() { 
+          Description = item.License.Description,
+          Id = item.License.Id,
+          Name = item.License.Name,
+          ReferenceId = item.License.ReferenceId,
+          Tags = item.License.Tags.Select(item => item.Name)
+        }) : default))
         .ForMember(fixTemplateDto => fixTemplateDto.WorkCategory, opts => opts.MapFrom(fixTemplate => fixTemplate != null ? fixTemplate.WorkCategory : default))
         .ForMember(fixTemplateDto => fixTemplateDto.WorkType, opts => opts.MapFrom(fixTemplate => fixTemplate != null ? fixTemplate.WorkType : default))
         .ForMember(fixTemplateDto => fixTemplateDto.FixUnit, opts => opts.MapFrom(fixTemplate => fixTemplate != null ? fixTemplate.FixUnit : default))
@@ -54,6 +63,7 @@ namespace Master.Database.Management.DataLayer.DataAccess.Mappers
 
       CreateMap<FixTemplateCreateRequestDto, FixTemplateDto>()
         .ForMember(fixTemplateDto => fixTemplateDto.Id, opts => opts.MapFrom(_ => Guid.NewGuid()))
+        .ForMember(fixTemplateDto => fixTemplateDto.Licenses, opts => opts.MapFrom(fixTemplateCreateRequestDto => fixTemplateCreateRequestDto != null && fixTemplateCreateRequestDto.LicenseIds != null ? fixTemplateCreateRequestDto.LicenseIds.Select(item => new LicenseDto() { Id = item }) : default))
         .ForMember(fixTemplateDto => fixTemplateDto.Status, opts => opts.MapFrom(fixTemplateCreateRequestDto => fixTemplateCreateRequestDto != null ? fixTemplateCreateRequestDto.Status : default))
         .ForMember(fixTemplateDto => fixTemplateDto.Name, opts => opts.MapFrom(fixTemplateCreateRequestDto => fixTemplateCreateRequestDto != null ? fixTemplateCreateRequestDto.Name : string.Empty))
         .ForMember(fixTemplateDto => fixTemplateDto.WorkCategory, opts => opts.MapFrom(fixTemplateCreateRequestDto => fixTemplateCreateRequestDto != null && fixTemplateCreateRequestDto.WorkCategoryId != default ? new WorkCategoryDto() { Id = fixTemplateCreateRequestDto.WorkCategoryId } : default))

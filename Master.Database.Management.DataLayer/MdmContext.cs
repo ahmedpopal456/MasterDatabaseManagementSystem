@@ -82,7 +82,7 @@ namespace Master.Database.Management.DataLayer
         .AddJsonFile(_configurationFileName)
         .Build();
 
-      string connectionString = configuration["FIXIT-MDM-DB-CS"];
+      string connectionString = "Server=tcp:fixit-mdm-test.database.windows.net,1433;Initial Catalog=fix-templates-test;Persist Security Info=False;User ID=fixit;Password=Zackthegsd1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
       optionsBuilder.UseSqlServer(connectionString);
     }
 

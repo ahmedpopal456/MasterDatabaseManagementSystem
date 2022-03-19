@@ -20,11 +20,6 @@ namespace Master.Database.Management.DataLayer.DataAccess.Internal
       _mdmContext = mdmContext ?? throw new ArgumentNullException($"{nameof(RequestMdmDalFactory)} expects a value for {nameof(mdmContext)}... null argument was provided");
     }
 
-    public IMdmSkillDal RequestMdmSkillDal()
-    {
-      return new MdmSkillDal(_mdmContext, _mapper);
-    }
-
     #region Fix Templates
     public IMdmFieldDal RequestMdmFieldDal()
     {

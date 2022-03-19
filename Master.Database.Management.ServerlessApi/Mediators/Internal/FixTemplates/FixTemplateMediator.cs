@@ -34,19 +34,22 @@ namespace Master.Database.Management.ServerlessApi.Mediators.Internal.FixTemplat
 
       var result = default(FixTemplateDto);
 
+      var operationStatus = new OperationStatus() { IsOperationSuccessful = true }; 
+
       // Create a FixTemplateDto
       var fixTemplateDto = _mapper.Map<FixTemplateCreateRequestDto, FixTemplateDto>(fixTemplateCreateRequestDto);
       result = fixTemplateDto;
 
       // Extract the SectionCreateRequestDtos
-      var sectionCreateRequestDtos = fixTemplateDto.Sections.Select(fixTemplateSectionDto => new SectionCreateRequestDto { Name = fixTemplateSectionDto.Name });
-      if (sectionCreateRequestDtos.Any())
+      var sectionCreateRequestDtos = fixTemplateDto.Sections?.Select(fixTemplateSectionDto => new SectionCreateRequestDto { Name = fixTemplateSectionDto.Name });
+      if (sectionCreateRequestDtos is { } && sectionCreateRequestDtos.Any())
       {
         // Get or Create Sections in DB
         var sectionResponseDto = await _requestMdmDalFactory.RequestMdmSectionDal().GetOrCreateManyAsync(sectionCreateRequestDtos, cancellationToken);
         if (sectionResponseDto != null && sectionResponseDto.IsOperationSuccessful && sectionResponseDto.Content.Any() && sectionResponseDto.Content.All(sectionDto => sectionDto != null && !sectionDto.Id.Equals(Guid.Empty)))
         {
           // If sections are created successfully,
+          operationStatus.IsOperationSuccessful = sectionResponseDto.IsOperationSuccessful;
           var createdSections = sectionResponseDto.Content;
           fixTemplateDto.Sections = createdSections.Select((createdSectionDto, index) => _mapper.Map<SectionDto, FixTemplateSectionDto>(createdSectionDto, fixTemplateDto.Sections.ElementAt(index))).ToList();
 
@@ -58,6 +61,7 @@ namespace Master.Database.Management.ServerlessApi.Mediators.Internal.FixTemplat
           if (fieldResponseDto != null && fieldResponseDto.IsOperationSuccessful && fieldResponseDto.Content.All(fieldDto => fieldDto != null && !fieldDto.Id.Equals(Guid.Empty)))
           {
             // If fields are created successfully,
+            operationStatus.IsOperationSuccessful = fieldResponseDto.IsOperationSuccessful;
             foreach (var fixTemplateSectionDto in fixTemplateDto.Sections)
             {
               var createdFieldDtos = fieldResponseDto.Content;
@@ -71,9 +75,13 @@ namespace Master.Database.Management.ServerlessApi.Mediators.Internal.FixTemplat
                 return fixTemplateFieldDto;
               }).ToList();
             }
-            result = await _requestMdmDalFactory.RequestMdmFixTemplateDal().CreateAsync(fixTemplateDto, cancellationToken);
           }
         }
+      }
+
+      if (operationStatus.IsOperationSuccessful)
+      {
+        result = await _requestMdmDalFactory.RequestMdmFixTemplateDal().CreateAsync(fixTemplateDto, cancellationToken);
       }
 
       return result;
